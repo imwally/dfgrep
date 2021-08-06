@@ -27,7 +27,7 @@ var (
 	ctx        = context.Background()
 )
 
-func SearchFile(search, path string) error {
+func searchFile(search, path string) error {
 	f, err := os.Open(path)
 	if err != nil {
 		return err
@@ -45,7 +45,7 @@ func SearchFile(search, path string) error {
 		}
 
 		//index := strings.Index(line, search)
-		index := SubStr(line, search)
+		index := subStr(line, search)
 		if index >= 0 {
 			out <- Result{
 				path,
@@ -58,7 +58,7 @@ func SearchFile(search, path string) error {
 	return nil
 }
 
-func SearchPath(search, path string) error {
+func searchPath(search, path string) error {
 	err := filepath.WalkDir(path, func(path string, d fs.DirEntry, e error) error {
 		if e != nil {
 			return e
@@ -74,7 +74,7 @@ func SearchPath(search, path string) error {
 
 		go func(search, path string) {
 			defer sem.Release(1)
-			err := SearchFile(search, path)
+			err := searchFile(search, path)
 			if err != nil {
 				log.Println(err)
 			}
@@ -86,10 +86,10 @@ func SearchPath(search, path string) error {
 	return err
 }
 
-// SubStr searches haystack for needle and returns the
+// subStr searches haystack for needle and returns the
 // index of the first instance of needle, otherwise it
 // returns -1.
-func SubStr(haystack, needle string) int {
+func subStr(haystack, needle string) int {
 	// Needle too big, you'd see it.
 	if len(needle) > len(haystack) {
 		return -1
@@ -141,7 +141,7 @@ func main() {
 		}
 	}()
 
-	if err := SearchPath(os.Args[1], os.Args[2]); err != nil {
+	if err := searchPath(os.Args[1], os.Args[2]); err != nil {
 		fmt.Fprintf(os.Stderr, "%s\n", err.Error())
 		return
 	}
