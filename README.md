@@ -8,4 +8,4 @@ I had a recent technical interview where I was asked to write a method which wou
 It's dumb because it doesn't support the 're' in grep.
 
 ## Fast
-It's fast because Go channels go brrrr.
+It's fast because Go routines go brrrr.
