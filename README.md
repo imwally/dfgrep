@@ -9,3 +9,13 @@ It's dumb because it doesn't support the 're' in grep.
 
 ## Fast
 It's fast because goroutines go brrrr.
+
+## Benchmarks
+```
+% du -sh maildir 
+2.5G	maildir
+% time grep -r "Wally" maildir 1>/dev/null
+grep -r "Wally" maildir > /dev/null  7.21s user 13.09s system 36% cpu 54.902 total
+% time dfgrep "Wally" maildir 1>/dev/null
+dfgrep "Wally" maildir > /dev/null  6.64s user 15.09s system 217% cpu 9.988 total
+```
